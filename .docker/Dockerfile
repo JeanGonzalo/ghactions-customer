@@ -23,4 +23,4 @@ RUN chown -R admin:devopsc /tmp
 USER admin
 
 # Ejecutamos el jar al iniciar el contenedor
-ENTRYPOINT ["java","-jar","/app.jar"]
+ENTRYPOINT ["java","-jar","/tmp/app.jar"]
