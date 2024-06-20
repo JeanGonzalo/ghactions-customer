@@ -15,6 +15,9 @@ on:
     branches: [ "develop" ]
 
 jobs:
+   #############################################################
+      # descargar codigo y luego Compilar
+    ########################################################
   build:
 
     runs-on: ubuntu-latest
@@ -29,3 +32,24 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn -B package --file pom.xml
+
+  #############################################################
+      # Crear artefacto y pushearlo
+    ########################################################
+
+    - name: Cache Maven packages
+      uses: actions/cache@v2
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
+
+    - name: Build with Maven
+      run: mvn clean install
+
+    - name: Archive JAR file
+      uses: actions/upload-artifact@v2
+      with:
+        name: java-app
+        path: target/*.jar
